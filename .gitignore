@@ -1,3 +1,5 @@
 .vs
 PrintTester/bin
 PrintTester/bower_components
+PrintTester/www/lib
+PrintTester/node_modules
