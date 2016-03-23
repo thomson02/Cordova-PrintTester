@@ -18,6 +18,7 @@
         element.className += ' ready';
 
         $("#find").click(function() {
+            alert("Finding...");
             window.cordova.plugins.zbtprinter.find(
                 function(mac) {
                     alert(mac);
@@ -29,6 +30,8 @@
         });
 
         $("#bluetooth").click(function() {
+            alert("Checking Bluetooth...");
+
             window.bluetoothSerial.isEnabled(
                 function() {
                     alert("bluetooth enabled");
@@ -52,9 +55,10 @@
 
         $("#print").click(function() {
 
+            alert("Printing...");
+
             window.cordova.plugins.zbtprinter.find(
                 function (mac) {
-                    alert(mac);
 
                     window.cordova.plugins.zbtprinter.print(mac, "^XA^FO10,10^AFN,26,13^FDHello, World!^FS^XZ",
                         function(success) {
