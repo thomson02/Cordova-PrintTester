@@ -1,0 +1,6 @@
+{
+    "name": "PrintTester",
+  "dependencies": {
+    "jquery": "2.2.2"
+  }
+}
