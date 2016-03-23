@@ -1,3 +1,7 @@
+.lbl {
+    color: white;
+}
+
 body {
     -webkit-touch-callout: none;
     -webkit-text-size-adjust: none;

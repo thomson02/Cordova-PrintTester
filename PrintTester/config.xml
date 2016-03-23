@@ -108,4 +108,5 @@
   </platform>
   <plugin name="cordova-plugin-bluetooth-serial" version="0.4.5" src="https://github.com/don/BluetoothSerial.git" />
   <plugin name="com.github.michael79bxl.zbtprinter" version="1.1.7" src="https://github.com/michael79bxl/zbtprinter.git" />
+  <plugin name="com.bluefletch.motorola" version="0.1.0" src="https://github.com/thomson02/motorola-datawedge-cordova-plugin.git" />
 </widget>

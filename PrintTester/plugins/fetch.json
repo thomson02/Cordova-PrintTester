@@ -24,5 +24,14 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "com.bluefletch.motorola": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/thomson02/motorola-datawedge-cordova-plugin.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

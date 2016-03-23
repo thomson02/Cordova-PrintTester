@@ -17,67 +17,54 @@
         element.innerHTML = 'Device Ready';
         element.className += ' ready';
 
-        $("#find").click(function() {
-            alert("Finding...");
-            window.cordova.plugins.zbtprinter.find(
-                function(mac) {
-                    alert(mac);
-                },
-                function(fail) {
-                    alert(fail);
-                }
-            );
-        });
+        var associatedPrinterMac = null;
 
-        $("#bluetooth").click(function() {
-            alert("Checking Bluetooth...");
+        // Hook up TC55 linear barcode scanner
+        if (window.datawedge) {
+            window.datawedge.start("com.spartansolutions.datawedge.ACTION");
+            window.datawedge.registerForBarcode(function(data) {
+                // convert to mac address syntax
+                var mac = data.barcode.replace(/(.{2})/g, "$1:").slice(0, -1);
+                associatedPrinterMac = mac;
+                $("#printer").text(associatedPrinterMac);
+            });
+        }
 
-            window.bluetoothSerial.isEnabled(
-                function() {
-                    alert("bluetooth enabled");
-
-                    window.bluetoothSerial.isConnected(
-                        function() {
-                            console.log("Bluetooth is connected");
-                        },
-                        function() {
-                            console.log("Bluetooth is *not* connected");
-                        }
-                    );
-
-
-                }, function() {
-                    alert("bluetooth *not* enabled");
-                });
-
-        });
-
-
+        // Handle Print Button
         $("#print").click(function() {
 
-            alert("Printing...");
+            if (associatedPrinterMac) {
 
-            window.cordova.plugins.zbtprinter.find(
-                function (mac) {
+                $.Deferred().resolve()
+                    .then(function() {
+                        // Check that bluetooth is enabled and if not, try to enable it
+                        var p = $.Deferred();
 
-                    window.cordova.plugins.zbtprinter.print(mac, "^XA^FO10,10^AFN,26,13^FDHello, World!^FS^XZ",
-                        function(success) {
-                            alert("Print ok");
-                        }, function(fail) {
-                            alert(fail);
-                        }
-                    );
+                        window.bluetoothSerial.isEnabled(
+                            p.resolve,
+                            function() {
+                                window.bluetoothSerial.enable(p.resolve, p.reject);
+                            });
 
-                },
-                function (fail) {
-                    alert(fail);
-                }
-            );
+                        return p;
+                    })
+                    .fail(function() {
+                        // Enable it if it is not
+                        alert("Unable to start bluetooth.");
+                    })
+                    .then(function() {
+                        var p = $.Deferred();
+                        window.cordova.plugins.zbtprinter.print(associatedPrinterMac, "^XA^FO10,10^AFN,26,13^FDHello, World!^FS^XZ", p.resolve, p.reject);
+                        return p;
+                    })
+                    .fail(function(err) {
+                        alert("Unable to print: " + err);
+                    });
 
-           
-
+            } else {
+                alert("A printer has not been associated with the device.");
+            }
         });
-
     };
 
     function onPause() {
