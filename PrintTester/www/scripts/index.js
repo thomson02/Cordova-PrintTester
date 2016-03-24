@@ -22,8 +22,8 @@
 
     function constructPrintString(printItems) {
 
-        var zebraCpclCommandPrefix = '! 0 200 200 210 1'; //'! 0 200 200 550 1';
-        var cursorYPosition = 0;
+        var zebraCpclCommandPrefix = '! 0 200 200 550 1'; 
+        var cursorYPosition = 15;
 
         var config = {
             textLineHeight: 40,
@@ -95,17 +95,22 @@
         dataString.push("FORM");    // form feed after printing
         dataString.push("PRINT");   // terminate and print the file
 
-        return dataString.join('\r\n');
+        return dataString.join('\r\n') + '\r\n';
     };
 
     function fakeLabel() {
         var printItems = [
             { text: "Supplier:" },
-            { text: "Company Name" },
+            { text: "[COMPANY NAME]" },
             { text: "Received: 23 Mar 2016" },
+            { text: "Inspection(s): None" },
             { text: "GRN#:" },
-            { barcode: "12345", showText: true },
-            { line: true }
+            { barcode: "5555555555", showText: true },
+            { line: true },
+            { text: "Parts:" },
+            { text: "1. Qty: 1" },
+            { text: "Store: [NAME OF STORE]" },
+            { barcode: "5555" }
         ];
 
         return constructPrintString(printItems);
